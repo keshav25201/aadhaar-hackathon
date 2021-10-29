@@ -1,6 +1,8 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse,JsonResponse
+from add_upd.utils.OTP import *
+# from .OTP import *
 
 def getCaptcha(request): 
-    print(request)
-    return HttpResponse()
+    captcha_response_body = OTP.generate_captchar()
+    return JsonResponse(captcha_response_body)
