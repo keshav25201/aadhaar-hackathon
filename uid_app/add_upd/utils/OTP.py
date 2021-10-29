@@ -30,16 +30,15 @@ def gen_otp(captcha, txnId):
         "https://stage1.uidai.gov.in/unifiedAppAuthService/api/v2/generate/aadhaar/otp"
     )
     response = requests.post(url=URL, json=json_data)
-    print(response.text)
-    return
+    return response.json()
+    
 
 
 def auth_api(otp, txnID):
     URL = "https://stage1.uidai.gov.in/onlineekyc/getAuth/"
     json_data = {"uid": "999911588232", "txnId": txnID, "otp": str(otp)}
     response = requests.post(url=URL, json=json_data)
-    print(response.text)
-    return
+    return response.json()
 
 
 # def read_image(response):
