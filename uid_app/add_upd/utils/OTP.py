@@ -81,11 +81,11 @@ else:
         captcha_response["statusCode"],
     )
 
-# print(captchaBase64String)
+# # print(captchaBase64String)
 
-# read_image()
-# gen_otp()
-"""1. run generate_captcha() function, replace the value of captchaTxnId and cpt (captchabase64) from the response recieved.
-2. run read_image() function and manually read the captcha from the image
-3. replace this captcha in captchaValue 
-4. run gen_otp() function"""
+# # read_image()
+# # gen_otp()
+# """1. run generate_captcha() function, replace the value of captchaTxnId and cpt (captchabase64) from the response recieved.
+# 2. run read_image() function and manually read the captcha from the image
+# 3. replace this captcha in captchaValue 
+# 4. run gen_otp() function"""
