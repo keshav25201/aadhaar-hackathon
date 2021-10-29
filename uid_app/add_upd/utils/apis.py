@@ -6,16 +6,19 @@ import requests, uuid
 def generate_captchar():
     Url = "https://stage1.uidai.gov.in/unifiedAppAuthService/api/v2/get/captcha"
     dat = {"langCode": "en", "captchaLength": "3", "captchaType": "2"}
-    response = requests.post(url=Url, json=dat)
+    headers = {"Content-Type": "application/json"}
+    response = requests.post(url=Url, json=dat, header=headers)
     # print(response.text)
     return response.json()
 
 
 def gen_otp(captcha, txnId, uid):
-    obj = uuid.uuid4()
-    string = str(obj)
+    u1 = uuid.uuid4()
+    u2 = uuid.uuid4()
+    ID1 = str(u1)
+    ID2 = str(u2)
     headers = {
-        "x-request-id": "a5747bf7-1dc0-4995-bb27-c5f3728baca7",
+        "x-request-id": ID1,
         "appid": "MYAADHAAR",
         "Accept-Language": "en_in",
         "Content-Type": "application/json",
@@ -24,19 +27,20 @@ def gen_otp(captcha, txnId, uid):
         "uidNumber": uid,
         "captchaTxnId": txnId,
         "captchaValue": captcha,
-        "transactionId": "MYAADHAAR:86ddc9b5-36e4-47fa-a947-9ff55d931d6a",
+        "transactionId": "MYAADHAAR:" + ID2,
     }
     URL = (
         "https://stage1.uidai.gov.in/unifiedAppAuthService/api/v2/generate/aadhaar/otp"
     )
-    response = requests.post(url=URL, json=json_data)
+    response = requests.post(url=URL, json=json_data, header=headers)
     return response.json()
 
 
 def eKYC_api(otp, txnID, uid):
     URL = "https://stage1.uidai.gov.in/onlineekyc/getEkyc/"
+    headers = {"Content-Type": "application/json"}
     json_data = {"uid": uid, "txnId": txnID, "otp": str(otp)}
-    response = requests.post(url=URL, json=json_data)
+    response = requests.post(url=URL, json=json_data, header=headers)
     return response.json()
 
 
