@@ -18,5 +18,6 @@ from django.urls import path
 from add_upd import views
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('captcha/',views.getCaptcha)
+    path('captcha/',views.getCaptcha),
+    path('otp/',views.getOTP)
 ]
