@@ -11,7 +11,7 @@ def generate_captchar():
     return response.json()
 
 
-def gen_otp(captcha, txnId):
+def gen_otp(captcha, txnId, uid):
     obj = uuid.uuid4()
     string = str(obj)
     headers = {
@@ -21,7 +21,7 @@ def gen_otp(captcha, txnId):
         "Content-Type": "application/json",
     }
     json_data = {
-        "uidNumber": "999911588232",
+        "uidNumber": uid,
         "captchaTxnId": txnId,
         "captchaValue": captcha,
         "transactionId": "MYAADHAAR:86ddc9b5-36e4-47fa-a947-9ff55d931d6a",
@@ -31,7 +31,13 @@ def gen_otp(captcha, txnId):
     )
     response = requests.post(url=URL, json=json_data)
     return response.json()
-    
+
+
+def eKYC_api(otp, txnID, uid):
+    URL = "https://stage1.uidai.gov.in/onlineekyc/getEkyc/"
+    json_data = {"uid": uid, "txnId": txnID, "otp": str(otp)}
+    response = requests.post(url=URL, json=json_data)
+    return response.json()
 
 
 # def auth_api(otp, txnID):
@@ -41,13 +47,13 @@ def gen_otp(captcha, txnId):
 #     return response.json()
 
 
-# # def read_image(response):
-# #     imgdata = base64.b64decode(response["captchaBase64String"])
-# #      print(imgdata)
-# #     filename = "some_image.jpg"  # I assume you have a way of picking unique filenames
-# #     with open(filename, "wb") as f:
-# #         f.write(imgdata)
-# #     return
+# def read_image(response):
+#     imgdata = base64.b64decode(response["captchaBase64String"])
+#      print(imgdata)
+#     filename = "some_image.jpg"  # I assume you have a way of picking unique filenames
+#     with open(filename, "wb") as f:
+#         f.write(imgdata)
+#     return
 
 
 # captcha_response = generate_captchar()
@@ -55,19 +61,19 @@ def gen_otp(captcha, txnId):
 # if captcha_response["status"] == "Success" and captcha_response["statusCode"] == 200:
 
 #     captchaBase64String = captcha_response["captchaBase64String"]  # send to front end
-#     # recieve captcha string from front end
-#     # send captchaTxnId and captcha string to get_otp()
+# recieve captcha string from front end
+# send captchaTxnId and captcha string to get_otp()
 #     captcha = "from front end"
 #     otp_response = gen_otp(captcha, captcha_response["captchaTxnId"])
 
 #     if otp_response["status"] == "Success":
-#         # send msg to front end otp_response[“message”]
-#         # fetch otp from front end
-#         # call auth ap to verify otp and proceed
+# send msg to front end otp_response[“message”]
+# fetch otp from front end
+# call auth ap to verify otp and proceed
 #         otp = 000000
 #         auth_response = auth_api(otp, otp_response["txnId"])
 #         if auth_response["status"] == "y":
-#             # send msg to front end that vefification succesful
+# send msg to front end that vefification succesful
 #             pass
 #         else:
 #             raise Exception("OTP entered is not correct")
@@ -81,11 +87,11 @@ def gen_otp(captcha, txnId):
 #         captcha_response["statusCode"],
 #     )
 
-# # # print(captchaBase64String)
+# print(captchaBase64String)
 
-# # # read_image()
-# # # gen_otp()
-# # """1. run generate_captcha() function, replace the value of captchaTxnId and cpt (captchabase64) from the response recieved.
-# # 2. run read_image() function and manually read the captcha from the image
-# # 3. replace this captcha in captchaValue 
-# # 4. run gen_otp() function"""
+# read_image()
+# gen_otp()
+# """1. run generate_captcha() function, replace the value of captchaTxnId and cpt (captchabase64) from the response recieved.
+# 2. run read_image() function and manually read the captcha from the image
+# 3. replace this captcha in captchaValue
+# 4. run gen_otp() function"""
