@@ -38,6 +38,7 @@ def SignUp(request):
     mobile = request_body["mobile"]
     password = request_body["password"]
     ekyc_response_body = apis.eKYC_api(otp,OTPtxnId,uid)
+    print(ekyc_response_body)
     return JsonResponse(ekyc_response_body)
     if ekyc_response_body["mobile"] == mobile:
         user = User.objects.create_user(username = mobile,password = password)
