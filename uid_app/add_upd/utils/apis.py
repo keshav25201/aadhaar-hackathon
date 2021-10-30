@@ -44,8 +44,21 @@ def eKYC_api(otp, txnID, uid):
     response = response.json()
     return json.dumps(xmltodict.parse(response["eKycString"]))
 
+<<<<<<< HEAD
 # generate_captchar()
 # gen_otp("mESvuj","iGqQ0W81xcE3","999911588232")
+=======
+
+def offline_ekyc(otp, txnID, uid, code):
+    URL = "https://stage1.uidai.gov.in/eAadhaarService/api/downloadOfflineEkyc"
+    headers = {"Content-Type": "application/json"}
+    json_data = {"txnNumber": txnID, "otp": str(otp), "shareCode": code, "uid": uid}
+    response = requests.post(url=URL, json=json_data, headers=headers)
+    # print(response.text)
+    return response.json()
+
+
+>>>>>>> 54d8cf550594797d9137b63a41a561609dc75199
 # def auth_api(otp, txnID):
 #     URL = "https://stage1.uidai.gov.in/onlineekyc/getAuth/"
 #     json_data = {"uid": "999911588232", "txnId": txnID, "otp": str(otp)}
