@@ -22,5 +22,6 @@ urlpatterns = [
     path('otp/',views.getOTP),
     path('signup/',views.SignUp),
     path('login/',views.Login),
-    path('request-address/',views.requestForSharingAddress)
+    path('request-address/',views.requestForSharingAddress),
+    path('accept',views.ResponseToRequestForAddress)
 ]
