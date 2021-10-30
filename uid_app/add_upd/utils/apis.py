@@ -8,7 +8,6 @@ def generate_captchar():
     dat = {"langCode": "en", "captchaLength": "3", "captchaType": "2"}
     headers = {"Content-Type": "application/json"}
     response = requests.post(url=Url, json=dat, headers=headers)
-    # print(response.text)
     return response.json()
 
 
@@ -45,7 +44,8 @@ def eKYC_api(otp, txnID, uid):
     response = response.json()
     return json.dumps(xmltodict.parse(response["eKycString"]))
 
-
+# generate_captchar()
+# gen_otp("mESvuj","iGqQ0W81xcE3","999911588232")
 # def auth_api(otp, txnID):
 #     URL = "https://stage1.uidai.gov.in/onlineekyc/getAuth/"
 #     json_data = {"uid": "999911588232", "txnId": txnID, "otp": str(otp)}

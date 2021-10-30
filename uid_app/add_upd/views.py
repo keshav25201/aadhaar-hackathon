@@ -12,7 +12,7 @@ from add_upd.utils import apis
 
 def getCaptcha(request): 
     if request.method == "POST":
-        return HttpResponse(status = 401)
+        return HttpResponse(status = 405)
     captcha_response_body = apis.generate_captchar()
     response = JsonResponse({
         "captchaBase64String" : captcha_response_body["captchaBase64String"],
@@ -22,13 +22,18 @@ def getCaptcha(request):
 
 
 def getOTP(request):
-    captchaTxnId = request.COOKIES["captchaTxnId"]
-    captcha = json.loads(request.body)["captcha"]
-    uid = json.loads(request.body)["uid"]
-    otp_response_body = apis.gen_otp(captcha,captchaTxnId,uid)
-    response = HttpResponse()
-    response.set_cookie("OTPtxnId", otp_response_body["txnId"])
-    return response
+    try:
+        captchaTxnId = request.COOKIES["captchaTxnId"]
+        captcha = json.loads(request.body)["captcha"]
+        uid = json.loads(request.body)["uid"]
+        otp_response_body = apis.gen_otp(captcha,captchaTxnId,uid)
+        response = HttpResponse()
+        response.set_cookie("OTPtxnId", otp_response_body["txnId"])
+        return response
+    except KeyError:
+        return HttpResponse(401)
+
+
 
 def SignUp(request):
     OTPtxnId = request.COOKIES['OTPtxnId']
@@ -37,11 +42,13 @@ def SignUp(request):
     uid = request_body["uid"]
     mobile = request_body["mobile"]
     password = request_body["password"]
-    ekyc_response_body = apis.eKYC_api(otp,OTPtxnId,uid)
-    print(ekyc_response_body)
-    return JsonResponse(ekyc_response_body)
-    if ekyc_response_body["mobile"] == mobile:
+    ekyc_response_body = json.loads(apis.eKYC_api(otp,OTPtxnId,uid))
+    uidData = ekyc_response_body["KycRes"]["UidData"]
+    ekyc_mobile = uidData['Poi']["@phone"]
+    ekyc_name = uidData['Poi']["@name"]
+    if ekyc_mobile == mobile:
         user = User.objects.create_user(username = mobile,password = password)
+        user.first_name = ekyc_name
         #add name
         user.save()
         return HttpResponse(status = 200)
@@ -55,12 +62,27 @@ def Login(request):
     user = authenticate(username = mobile,password = password)
     if user is not None:
         login(request,user)
-        return HttpResponse(200)
+        sent_requests = Request.objects.get(From = user)
+        recieved_requests = Request.objects.get(To = user)
+        return JsonResponse({
+            'sent' : sent_requests,
+            'recieved' : recieved_requests
+        })
     else: 
         return HttpResponse(400)
 def requestForSharingAddress(request):
+    request_body = json.loads(request.body)
+    user = request.user
+    Transaction = Request(From = user,To = request_body["mobile"])
+    Transaction.save()
     return HttpResponse()
 
-def ResponseToRequestForAddress():
-    return HttpResponse()
+def ResponseToRequestForAddress(request):
+    request_body = json.loads(request.body)
+    if request_body["permission"] == "accepted":
+        return HttpResponse()
+    elif request_body["permission"] == "rejected":
+        return HttpResponse()
+    else:
+        return HttpResponse()
      

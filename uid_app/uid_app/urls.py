@@ -20,5 +20,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('captcha/',views.getCaptcha),
     path('otp/',views.getOTP),
-    path('signup/',views.SignUp)
+    path('signup/',views.SignUp),
+    path('login/',views.Login),
+    path('request-address/',views.requestForSharingAddress)
 ]
