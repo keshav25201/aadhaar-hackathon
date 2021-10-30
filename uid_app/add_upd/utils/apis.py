@@ -7,7 +7,7 @@ def generate_captchar():
     Url = "https://stage1.uidai.gov.in/unifiedAppAuthService/api/v2/get/captcha"
     dat = {"langCode": "en", "captchaLength": "3", "captchaType": "2"}
     headers = {"Content-Type": "application/json"}
-    response = requests.post(url=Url, json=dat, header=headers)
+    response = requests.post(url=Url, json=dat, headers=headers)
     # print(response.text)
     return response.json()
 
@@ -32,7 +32,7 @@ def gen_otp(captcha, txnId, uid):
     URL = (
         "https://stage1.uidai.gov.in/unifiedAppAuthService/api/v2/generate/aadhaar/otp"
     )
-    response = requests.post(url=URL, json=json_data, header=headers)
+    response = requests.post(url=URL, json=json_data, headers=headers)
     return response.json()
 
 
@@ -40,7 +40,7 @@ def eKYC_api(otp, txnID, uid):
     URL = "https://stage1.uidai.gov.in/onlineekyc/getEkyc/"
     headers = {"Content-Type": "application/json"}
     json_data = {"uid": uid, "txnId": txnID, "otp": str(otp)}
-    response = requests.post(url=URL, json=json_data, header=headers)
+    response = requests.post(url=URL, json=json_data, headers=headers)
     response["eKycString"] = json.dumps(xmltodict.parse(response["eKycString"]))
     return response.json()
 
