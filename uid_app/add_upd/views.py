@@ -17,13 +17,15 @@ def getCaptcha(request):
     })
     response.set_cookie("captchaTxnId",captcha_response_body["captchaTxnId"])
     return response
+
+
 def getOTP(request):
-    captchaTxnId =  request.COOKIES["captchaTxnId"]
+    captchaTxnId = request.COOKIES["captchaTxnId"]
     captcha = json.loads(request.body)["captcha"]
     uid = json.loads(request.body)["uid"]
     otp_response_body = apis.gen_otp(captcha,captchaTxnId,uid)
     response = HttpResponse()
-    response.set_cookie('OTPtxnId',otp_response_body["txnId"])
+    response.set_cookie("OTPtxnId", otp_response_body["txnId"])
     return response
 
 def SignUp(request):

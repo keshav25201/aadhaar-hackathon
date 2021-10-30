@@ -1,4 +1,4 @@
-import requests, uuid
+import requests, uuid, xmltodict, json
 
 # import base64
 
@@ -41,6 +41,7 @@ def eKYC_api(otp, txnID, uid):
     headers = {"Content-Type": "application/json"}
     json_data = {"uid": uid, "txnId": txnID, "otp": str(otp)}
     response = requests.post(url=URL, json=json_data, header=headers)
+    response["eKycString"] = json.dumps(xmltodict.parse(response["eKycString"]))
     return response.json()
 
 
