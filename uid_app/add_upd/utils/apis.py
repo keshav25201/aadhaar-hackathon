@@ -41,8 +41,9 @@ def eKYC_api(otp, txnID, uid):
     headers = {"Content-Type": "application/json"}
     json_data = {"uid": uid, "txnId": txnID, "otp": str(otp)}
     response = requests.post(url=URL, json=json_data, headers=headers)
+    response = response.json()
     response["eKycString"] = json.dumps(xmltodict.parse(response["eKycString"]))
-    return response.json()
+    return response
 
 
 # def auth_api(otp, txnID):
