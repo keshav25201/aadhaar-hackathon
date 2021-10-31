@@ -99,8 +99,32 @@ def shareInfo(request):
         otp = request_body["otp"]
         uid = request_body["uid"]
         ekyc_response_body = json.loads(apis.eKYC_api(otp, OTPtxnId, uid))
-        uidData = ekyc_response_body["KycRes"]["UidData"]
+        uidData = ekyc_response_body["eKycString"]["KycRes"]["UidData"]
         ekyc_name = uidData["Poi"]["@name"]
+        ekyc_mobile = uidData["Poi"]["@phone"]
+        ekyc_photo_byte64_string = uidData["Pht"]
+        response = JsonResponse(
+            {
+                "info": {
+                    "name": ekyc_name,
+                    "mobile": ekyc_mobile,
+                    "photo": ekyc_photo_byte64_string,
+                },
+                "status": "y",
+            }
+        )
+        return response
+    else:
+        response = JsonResponse(
+            {
+                "info": {
+                    "name": ekyc_name,
+                    "mobile": ekyc_mobile,
+                    "photo": ekyc_photo_byte64_string,
+                },
+                "status": "y",
+            }
+        )
 
 
 def sendAddressToUser(request):
