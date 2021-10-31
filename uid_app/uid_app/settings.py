@@ -24,10 +24,9 @@ SECRET_KEY = "pt%0%te52v#hli1+irv+x4ryjbg!70=&s1j$4@os&bg9s6lr@r"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
 ALLOWED_HOSTS = ['c5db-14-139-226-226.ngrok.io','127.0.0.1']
-
-
+SESSION_COOKIE_DOMAIN = 'localhost'
+CORS_ALLOW_CREDENTIALS = True
 # Application definition
 
 INSTALLED_APPS = [
@@ -38,9 +37,11 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "add_upd.apps.AddUpdConfig",
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
+       "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -49,7 +50,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
-
+CORS_ORIGIN_ALLOW_ALL = True
 ROOT_URLCONF = "uid_app.urls"
 
 TEMPLATES = [

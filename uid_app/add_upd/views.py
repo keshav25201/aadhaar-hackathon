@@ -18,28 +18,32 @@ def getCaptcha(request):
     response = JsonResponse(
         {
             "captchaBase64String": captcha_response_body["captchaBase64String"],
+            "captchaTxnId" : captcha_response_body["captchaTxnId"]
         }
     )
-    response.set_cookie("captchaTxnId", captcha_response_body["captchaTxnId"])
+    # response.set_cookie("captchaTxnId", captcha_response_body["captchaTxnId"],samesite='None')
     return response
 
 
 def getOTP(request):
     try:
-        captchaTxnId = request.COOKIES["captchaTxnId"]
+        captchaTxnId = json.loads(request.body)["captchaTxnId"]
         captcha = json.loads(request.body)["captcha"]
         uid = json.loads(request.body)["uid"]
         otp_response_body = apis.gen_otp(captcha, captchaTxnId, uid)
-        response = HttpResponse()
-        response.set_cookie("OTPtxnId", otp_response_body["txnId"])
+        response = JsonResponse({
+            "OTPtxnId" : otp_response_body["txnId"]
+        })
+        # response.set_cookie("OTPtxnId", otp_response_body["txnId"])
         return response
     except KeyError:
-        return HttpResponse(401)
+        return HttpResponse(status = 401)
 
 
 def SignUp(request):
-    OTPtxnId = request.COOKIES["OTPtxnId"]
     request_body = json.loads(request.body)
+    print(request_body)
+    OTPtxnId = request_body["OTPtxnId"]
     otp = request_body["otp"]
     uid = request_body["uid"]
     mobile = request_body["mobile"]
