@@ -42,7 +42,8 @@ def eKYC_api(otp, txnID, uid):
     response = requests.post(url=URL, json=json_data, headers=headers)
     # response = response.json()
     response = response.json()
-    return json.dumps(xmltodict.parse(response["eKycString"]))
+    response["eKycString"] = json.dumps(xmltodict.parse(response["eKycString"]))
+    return response
 
 
 def offline_ekyc(otp, txnID, uid, code):
