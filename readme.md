@@ -1,5 +1,2 @@
 aadhar hackathon
-
-jgjg
-
-dfdf
+using : Django for backend and javascript html for frontend
