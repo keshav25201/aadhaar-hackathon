@@ -83,13 +83,10 @@ def requestForSharingAddress(request):
 
 def requestForMoreInfo(request):
     request_body = json.loads(request.body)
-    if request_body["permission"] == "accepted":
-
-        return HttpResponse(status=200)
-    elif request_body["permission"] == "rejected":
-        return HttpResponse()
-    else:
-        return HttpResponse()
+    user = request.user
+    Transaction = models.req_info(From=user, To=request_body["mobile"])
+    Transaction.save()
+    return HttpResponse(status=200)
 
 
 def shareInfo(request):
@@ -113,18 +110,19 @@ def shareInfo(request):
                 "status": "y",
             }
         )
-        return response
     else:
         response = JsonResponse(
             {
                 "info": {
-                    "name": ekyc_name,
-                    "mobile": ekyc_mobile,
-                    "photo": ekyc_photo_byte64_string,
+                    "name": None,
+                    "mobile": None,
+                    "photo": None,
                 },
-                "status": "y",
+                "status": "n",
             }
         )
+
+    return response
 
 
 def sendAddressToUser(request):
